@@ -1,0 +1,45 @@
+version: '3.8'
+services:
+  spring-rest-hateoas_api:
+    container_name: 'hateoas_api'
+    image: 'spring-rest-hateoas_image'
+    build: ./
+    ports:
+      - '8083:8083'
+    depends_on:
+      - spring-rest-hateoas_db
+    command: catalina.sh run
+
+    environment:
+      # The inside port will be used by the dependent services
+      SPRING_DATASOURCE_URL: jdbc:postgresql://spring-rest-hateoas_db:5432/account_api_bd_hateoas
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: asdf
+      SERVER_PORT: 8083
+    networks:
+      - spring-rest-hateoas_network
+
+  spring-rest-hateoas_db:
+    image: 'postgres'
+    container_name: 'spring-rest-hateoas_db'
+    volumes:
+      #      - pgdata:/var/lib/postgresql/data
+      - type: volume
+        source: spring-rest-hateoas
+        target: "$PWD/Documents/docker_data/account_api_bd_hateoas"
+    ports:
+      - '5432:5432'
+    environment:
+      - 'POSTGRES_PASSWORD=asdf'
+      - 'POSTGRES_USER=postgres'
+      - 'POSTGRES_DB=account_api_bd_hateoas'
+    networks:
+      - spring-rest-hateoas_network
+    extra_hosts:
+      - 'spring-rest-hateoas_network:192.168.1.104'
+
+volumes:
+  spring-rest-hateoas:
+networks:
+  spring-rest-hateoas_network:
+

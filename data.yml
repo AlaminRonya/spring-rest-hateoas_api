@@ -1,0 +1,45 @@
+#version: '3.8'
+#services:
+#  social_community_web:
+#    container_name: 'social_community_web'
+#    image: 'social_community_image'
+#    build: ./
+#    ports:
+#      - '8083:8080'
+#    depends_on:
+#      - social_community_db
+#    command: catalina.sh run
+#
+#    environment:
+#      # The inside port will be used by the dependent services
+#      SPRING_DATASOURCE_URL: jdbc:postgresql://social_community_db:5432/social_community_v3
+#      SPRING_DATASOURCE_USERNAME: postgres
+#      SPRING_DATASOURCE_PASSWORD: alamin
+#      SERVER_PORT: 8083
+#    networks:
+#      - social_community_network
+#
+#  social_community_db:
+#    image: 'postgres'
+#    container_name: 'social_community_db'
+#    volumes:
+#      #      - pgdata:/var/lib/postgresql/data
+#      - type: volume
+#        source: social_community
+#        target: "$PWD/Documents/docker_data/social_community_db"
+#    ports:
+#      - '5433:5432'
+#    environment:
+#      - 'POSTGRES_PASSWORD=alamin'
+#      - 'POSTGRES_USER=postgres'
+#      - 'POSTGRES_DB=social_community_v3'
+#    networks:
+#      - social_community_network
+#    extra_hosts:
+#      - 'social_community_network:192.168.1.104'
+#
+#volumes:
+#  social_community:
+#networks:
+#  social_community_network:
+#
